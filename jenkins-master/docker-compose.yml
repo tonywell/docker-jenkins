@@ -1,0 +1,18 @@
+# Jenkins Master
+jenkins:
+  image: tonywell/jenkins-master
+  container_name: jenkins
+  environment:
+    JAVA_OPTS: "-Djava.awt.headless=true" 
+  ports:
+   - "8088:8080"
+   - "50000"
+  volumes:
+    - ./data:/jenkins
+  dns:
+    - 8.8.8.8
+  #env_file:
+  #  - jenkins-master.env
+  labels:
+    com.blacklabelops.description: "Jenkins Continuous Integration System"
+    com.blacklabelops.service: "jenkins-master"
