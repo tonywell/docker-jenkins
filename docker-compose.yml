@@ -1,0 +1,64 @@
+version: '2'
+
+services:
+
+# Jenkins Master
+ jenkins:
+   image: tonywell/jenkins-master
+   container_name: jenkins
+   hostname: jenkins
+   networks:
+     - jenkinsnet
+   environment:
+     JAVA_OPTS: "-Djava.awt.headless=true" 
+   ports:
+    - "8088:8080"
+    - "50000"
+   volumes:
+     - ./data:/jenkins
+   dns:
+     - 8.8.8.8
+   env_file:
+     - jenkins-master.env
+   labels:
+     com.blacklabelops.description: "Jenkins Continuous Integration System"
+     com.blacklabelops.service: "jenkins-master"
+ 
+ slave1:
+    image: tonywell/jenkins-jdk8
+    container_name: jenkins-java8 
+    networks:
+      - jenkinsnet
+    volumes:
+      - ./workspace:/opt/jenkins/workspace
+      - ./m2:/root/.m2
+    links:
+      - jenkins:jenkins
+    env_file:
+      - jenkins-slave-java8.env
+    labels:
+      com.blacklabelops.description: "Jenkins Swarm JDK-8 Slave"
+      com.blacklabelops.service: "slave"
+      com.blacklabelops.applications: "java maven gradle"
+
+ slave2:
+    image: tonywell/jenkins-jdk7
+    container_name: jenkins-java7
+    networks:
+      - jenkinsnet
+    volumes:
+      - ./workspace:/opt/jenkins/workspace
+      - ./m2:/root/.m2
+    links:
+      - jenkins:jenkins
+    env_file:
+      - jenkins-slave-java7.env
+    labels:
+      com.blacklabelops.description: "Jenkins Swarm JDK-7 Slave"
+      com.blacklabelops.service: "slave"
+      com.blacklabelops.applications: "java maven gradle"
+
+
+networks:
+   jenkinsnet:
+      driver: bridge
