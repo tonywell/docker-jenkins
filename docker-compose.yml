@@ -30,8 +30,10 @@ services:
     networks:
       - jenkinsnet
     volumes:
+      - /usr/bin/docker:/usr/bin/docker:ro
       - ./workspace:/opt/jenkins/workspace
       - ./m2:/root/.m2
+      - /home/fileDownload/update:/opt/jenkins/target
     links:
       - jenkins:jenkins
     env_file:
@@ -47,8 +49,10 @@ services:
     networks:
       - jenkinsnet
     volumes:
+      - /usr/bin/docker:/usr/bin/docker:ro
       - ./workspace:/opt/jenkins/workspace
       - ./m2:/root/.m2
+      - /home/fileDownload/update:/opt/jenkins/target
     links:
       - jenkins:jenkins
     env_file:

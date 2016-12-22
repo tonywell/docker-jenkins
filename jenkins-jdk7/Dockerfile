@@ -18,7 +18,9 @@ ENV M2_HOME=/usr/local/maven
 ENV GRADLE_VERSION=3.2.1
 ENV GRADLE_HOME=/usr/local/gradle
 
-RUN  wget ftp://temp:temp@192.168.50.104/centos7/jdk/jdk-${JAVA_MAJOR_VERSION}u${JAVA_UPDATE_VERSION}-linux-x64.tar.gz && \ 
+RUN   apk upgrade --update && \
+      apk add --update libltdl && \ 
+      wget ftp://temp:temp@192.168.50.104/centos7/jdk/jdk-${JAVA_MAJOR_VERSION}u${JAVA_UPDATE_VERSION}-linux-x64.tar.gz && \ 
 #     wget --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
 #     http://download.oracle.com/otn-pub/java/jdk/${JAVA_MAJOR_VERSION}u${JAVA_UPDATE_VERSION}-b${JAVA_BUILD_NUMBER}/jdk-${JAVA_MAJOR_VERSION}u${JAVA_UPDATE_VERSION}-linux-x64.tar.gz && \
     tar -xzf jdk-${JAVA_MAJOR_VERSION}u${JAVA_UPDATE_VERSION}-linux-x64.tar.gz -C /opt/java &&\
@@ -58,6 +60,7 @@ RUN  wget ftp://temp:temp@192.168.50.104/centos7/jdk/jdk-${JAVA_MAJOR_VERSION}u$
            ${JAVA_HOME}/jre/lib/jfr.jar \
            ${JAVA_HOME}/jre/lib/jfr \
            ${JAVA_HOME}/jre/lib/oblique-fonts \
+    
     apk del build-dependencies && \
     rm -rf /tmp/* && \
 
